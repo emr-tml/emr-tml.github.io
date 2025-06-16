@@ -1,4 +1,6 @@
 <title>Simple Aim Trainer (by EMR)</title>
 <meta name="viewport" content="width=device-width">
 
+<meta name="description" content="Very simple Aim Trainer, you can improve your aim and be a professional on all FPS games!">
+
 <canvas id=c style="position:fixed;top:0;left:0;background:#111" width=innerWidth height=innerHeight onclick="dx=event.clientX-x;dy=event.clientY-y;if(dx*dx+dy*dy<400){x=Math.random()*c.width;y=Math.random()*c.height;d()}" ></canvas><script>c.width=innerWidth;c.height=innerHeight;a=c.getContext('2d');a.fillStyle='white';x=c.width/2;y=c.height/2;function d(){a.clearRect(0,0,c.width,c.height);a.beginPath();a.arc(x,y,20,0,7);a.fill()}d()</script>

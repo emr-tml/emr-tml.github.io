@@ -1,5 +1,3 @@
-![image](https://github.com/user-attachments/assets/35db4168-57ff-43bd-b5fd-fe6cf1ec7e1d)
-
 Hello GitHub Community, this website includes my projects, i have a lot of projects but i will add some of them to this website because the others is in the demo.
 
 But, who am i?

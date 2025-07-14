@@ -5,90 +5,150 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Strong Password Generator</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+  }
   body {
-    background:#000;color:#0f0;font-family:sans-serif;
-    height:100vh;display:flex;flex-direction:column;
-    justify-content:center;align-items:center;user-select:none;
-    padding-bottom:50px;
+    background: #fff;
+    color: #222;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    padding-bottom: 50px;
   }
   h1 {
-    font-size:2.8rem;color:#0f0;
-    text-shadow:0 0 2px #0f0,0 0 3px #0f0,0 0 7px #0f0;
-    margin-bottom:30px;user-select:text;
+    font-size: 2.8rem;
+    color: #222;
+    margin-bottom: 30px;
+    user-select: text;
   }
   .container {
-    background:#111;padding:25px 35px;border-radius:12px;
-    box-shadow:0 0 20px #0f03;min-width:320px;text-align:center;
+    background: #fafafa;
+    padding: 25px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 320px;
+    text-align: center;
   }
   .input-group {
-    display:flex;margin-bottom:18px;align-items:stretch;
+    display: flex;
+    margin-bottom: 18px;
+    align-items: stretch;
   }
   #password {
-    flex:1;font-size:1.05rem;padding:10px 15px;
-    border:none;border-radius:10px 0 0 10px;outline:none;
-    text-align:center;user-select:all;background:#222;color:#0f0;
-    height:40px;min-width:200px;transition:width 0.75s ease;
-    overflow:hidden;white-space:nowrap;
+    flex: 1;
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px 0 0 10px;
+    outline: none;
+    text-align: center;
+    user-select: all;
+    background: #fff;
+    color: #222;
+    height: 40px;
+    min-width: 200px;
+    transition: width 0.75s ease;
+    overflow: hidden;
+    white-space: nowrap;
   }
   button {
-    padding:0 18px;background:#0f0;color:#000;font-weight:bold;
-    border:none;cursor:pointer;box-shadow:0 4px 8px rgba(0,255,0,0.2);
-    transition:transform 0.15s ease, box-shadow 0.15s ease;
-    font-size:0.95rem;user-select:none;
-    height:40px;display:inline-flex;align-items:center;justify-content:center;
+    padding: 0 18px;
+    background: #fff;
+    color: #222;
+    font-weight: 600;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 0.95rem;
+    user-select: none;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     white-space: nowrap;
   }
   button:hover {
-    transform:translateY(-2px);
-    box-shadow:0 6px 12px rgba(0,255,0,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
   }
   button:active {
-    transform:translateY(2px);
-    box-shadow:0 2px 5px rgba(0,255,0,0.2);
+    transform: translateY(2px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
   #copyBtn {
-    border-radius:0 10px 10px 0;
+    border-radius: 0 10px 10px 0;
     width: 60px;
-    transition: width 0.75s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    transition: width 0.75s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
-  #copyBtn:hover, #copyBtn:active {
-    /* Hover ve active için transform ve box-shadow yukarıdaki button genelinden geliyor */
+  #generateBtn {
+    margin-top: 10px;
+    border-radius: 8px;
+    padding: 10px 32px;
   }
-  #generateBtn {margin-top:10px;border-radius:8px;padding:10px 32px;}
   .slider-group {
-    margin-top:15px;color:#0f0;font-size:0.95rem;
+    margin-top: 15px;
+    color: #444;
+    font-size: 0.95rem;
   }
   input[type="range"] {
-    width:100%;margin-top:5px;-webkit-appearance:none;background:transparent;
+    width: 100%;
+    margin-top: 5px;
+    -webkit-appearance: none;
+    background: transparent;
   }
   input[type="range"]::-webkit-slider-runnable-track {
-    height:6px;background:#0f0;border-radius:3px;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
   }
   input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance:none;height:16px;width:16px;
-    background:#0f0;border-radius:50%;margin-top:-5px;
-    cursor:pointer;box-shadow:0 0 8px #0f0;
-    transition:box-shadow 0.3s ease;
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    background: #888;
+    border-radius: 50%;
+    margin-top: -5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    transition: box-shadow 0.3s ease;
   }
   input[type="range"]:hover::-webkit-slider-thumb {
-    box-shadow:0 0 12px #0f0;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
   }
   input[type="range"]::-moz-range-track {
-    height:6px;background:#0f0;border-radius:3px;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
   }
   input[type="range"]::-moz-range-thumb {
-    height:16px;width:16px;background:#0f0;
-    border-radius:50%;cursor:pointer;box-shadow:0 0 8px #0f0;
-    transition:box-shadow 0.3s ease;
+    height: 16px;
+    width: 16px;
+    background: #888;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    transition: box-shadow 0.3s ease;
   }
   input[type="range"]:hover::-moz-range-thumb {
-    box-shadow:0 0 12px #0f0;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
   }
   footer {
-    position:fixed;bottom:10px;left:0;width:100%;
-    text-align:center;color:#444;font-size:0.9rem;
-    user-select:none;pointer-events:none;
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    user-select: none;
+    pointer-events: none;
   }
 </style>
 </head>
@@ -111,63 +171,69 @@
 <footer>Made with ♥ by ChatGPT Pro (really, it's made with GPT)</footer>
 
 <script>
-  let passwordLength=20;
-  const input=document.getElementById('password'),
-        lengthValue=document.getElementById('lengthValue'),
-        copyBtn=document.getElementById('copyBtn');
+  let passwordLength = 20;
+  const input = document.getElementById('password'),
+        lengthValue = document.getElementById('lengthValue'),
+        copyBtn = document.getElementById('copyBtn');
 
-  function updateLength(v){
-    passwordLength=+v;
-    lengthValue.textContent=v;
+  function updateLength(v) {
+    passwordLength = +v;
+    lengthValue.textContent = v;
     adjustWidth(v);
   }
-  function adjustWidth(len){
-    input.style.width=(len*9.5+40)+'px';
+
+  function adjustWidth(len) {
+    input.style.width = (len * 12 + 60) + 'px';
   }
-  function getRandInt(max){
-    const arr=new Uint32Array(1);
+
+  function getRandInt(max) {
+    const arr = new Uint32Array(1);
     let r;
     do {
       crypto.getRandomValues(arr);
-      r=arr[0]/0x100000000;
-    }while(r*max>=max);
-    return Math.floor(r*max);
+      r = arr[0] / 0x100000000;
+    } while (r * max >= max);
+    return Math.floor(r * max);
   }
-  function shuffle(a){
-    for(let i=a.length-1;i>0;i--){
-      let j=getRandInt(i+1);
-      [a[i],a[j]]=[a[j],a[i]];
+
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      let j = getRandInt(i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
   }
-  function generatePassword(){
-    const U="ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-          L="abcdefghijklmnopqrstuvwxyz",
-          D="0123456789",
-          S="!@#$%^&*()-_=+[]{}|;:,.<>?",
-          all=U+L+D+S;
-    let pass=[U[getRandInt(U.length)],L[getRandInt(L.length)],D[getRandInt(D.length)],S[getRandInt(S.length)]];
-    for(let i=4;i<passwordLength;i++) pass.push(all[getRandInt(all.length)]);
-    input.value=shuffle(pass).join('');
+
+  function generatePassword() {
+    const U = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          L = "abcdefghijklmnopqrstuvwxyz",
+          D = "0123456789",
+          S = "!@#$%^&*()-_=+[]{}|;:,.<>?",
+          all = U + L + D + S;
+    let pass = [U[getRandInt(U.length)], L[getRandInt(L.length)], D[getRandInt(D.length)], S[getRandInt(S.length)]];
+    for (let i = 4; i < passwordLength; i++) pass.push(all[getRandInt(all.length)]);
+    input.value = shuffle(pass).join('');
     adjustWidth(passwordLength);
-    copyBtn.textContent="Copy";
+    copyBtn.textContent = "Copy";
   }
-  function copyPassword(){
-    if(!input.value)return;
-    navigator.clipboard.writeText(input.value).then(()=>{
+
+  function copyPassword() {
+    if (!input.value) return;
+    navigator.clipboard.writeText(input.value).then(() => {
       copyBtn.style.width = '70px';
-      copyBtn.textContent="Copied!";
-      setTimeout(()=>{
-        copyBtn.textContent="Copy";
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
         copyBtn.style.width = '60px';
-      },1500);
-    }).catch(()=>{
+      }, 1500);
+    }).catch(() => {
       input.select();
       document.execCommand('copy');
       alert("Copied to clipboard");
     });
   }
-  window.onload=()=>adjustWidth(passwordLength);
+
+  window.onload = () => adjustWidth(passwordLength);
 </script>
 
 </body>

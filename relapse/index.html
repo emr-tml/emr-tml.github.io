@@ -1,0 +1,27 @@
+<title>~</title>
+<meta name="viewport" content="width=device-width">
+
+<style>
+  body {background-color: #111; font-family: system-ui; color: whitesmoke;}
+</style>
+
+<h1>$ Relapse Self-host ~</h1>
+<p style="color: red;">! This tutorial is for professional users, if you're not a professional, get help from a professional.</p><br>
+
+Hello, welcome to the Relapse page. Normally, on your PS5, you have to change your DNS settings and go to User Guide, jailbreak your PS5 with going online. It is not secure though. Accidentally updating or PSN ban is necessary.<br><br>
+
+This tutorial is for self-hosting the exploit and jailbreaking PS5 7.00-13.60.<br><br>
+
+You need a Linux machine, a router (there is no need for internet, just a router), and a PS5 (bruh.)<br><br>
+
+<a href="https://emr-tml.github.io/Relapse-Exploit-main.zip" style="color: whitesmoke;">Download it and extract it, run a HTTP server in it with Python (sudo python3 -m http.server 80) or anything like that.</a><br><br>
+
+Then, you have to install dnsmasq to self-host a DNS server. "sudo apt install dnsmasq".<br><br>
+
+Now, do "sudo nano /etc/dnsmasq.conf" and edit your file. You have to redirect "manuals.playstation.net" address to your local IP address. If you don't do this, you can't jailbreak your PS5 through the User Guide button easily. After editing the dnsmasq.conf file, you have to restart the service (sudo systemctl restart dnsmasq)<br><br>
+
+Delete all the text that is on dnsmasq.conf, it's have to be blank. After, just type "address=/manuals.playstation.net/YOURIP". You have to type your local IP to "YOURIP" section (e.g. 192.168.1.50)<br><br>
+
+Check if your DNS server works on your phone, other computer, or the PS5. If it doesn't work, it's because the systemd-resolved. Edit /etc/systemd/resolved.conf and find DNSStubListener text. It is writing like "#DNSStubListener=yes" on default, uncomment it and change it to "DNSStubListener=no", after restarting the service (sudo systemctl restart systemd-resolved), your DNS server has to be working now.<br><br>
+
+If it works successfully, change your DNS settings on your PS5 to your computers local IP address and go to User Guide, skip the certificate error and you'll land on the jailbreaking page. Jailbreak your PS5 now, enjoy.
